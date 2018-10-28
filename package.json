@@ -9,10 +9,12 @@
     "@babel/core": "^7.1.2",
     "babel-cli": "^6.26.0",
     "babel-plugin-transform-class-properties": "^6.24.1",
+    "babel-plugin-transform-object-rest-spread": "^6.26.0",
     "babel-preset-env": "^1.7.0",
     "bcrypt": "^3.0.1",
     "body-parser": "^1.18.3",
     "bookshelf": "^0.13.3",
+    "bookshelf-bcrypt": "^3.0.2",
     "bookshelf-uuid": "^1.0.0",
     "dotenv": "^6.1.0",
     "express": "^4.16.4",
@@ -20,7 +22,9 @@
     "joi": "^14.0.1",
     "jsonwebtoken": "^8.3.0",
     "knex": "^0.15.2",
+    "ng-faker": "^1.0.1",
     "pg": "^7.5.0",
+    "uuid": "^3.3.2",
     "winston": "^3.1.0"
   },
   "devDependencies": {
@@ -31,6 +35,8 @@
     "build": "rimraf dist/ && babel ./ --out-dir dist/ --ignore ./node_modules,./tests,./coverage,./docs",
     "dev": "babel-watch index.js",
     "knex-cli:es6": "./node_modules/.bin/babel-node ./node_modules/.bin/knex $*",
-    "migrate": "yarn knex-cli:es6 migrate:latest"
+    "migrate": "yarn knex-cli:es6 migrate:latest",
+    "seed": "yarn knex-cli:es6 seed:run",
+    "db:prepare": "yarn migrate && yarn seed"
   }
 }

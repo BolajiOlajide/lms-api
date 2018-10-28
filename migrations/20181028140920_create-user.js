@@ -6,7 +6,7 @@ exports.up = knex => knex.schema
     table.uuid('id').notNullable().primary();
     table.string('firstname').notNullable();
     table.string('surname').notNullable();
-    table.string('email').notNullable();
+    table.string('email').notNullable().unique();
     table.string('password').notNullable();
     table.timestamps(false, true); // no need to explicitly specify `created_at` and `updated_at`
     // table.timestamp("createdAt").defaultTo(knex.fn.now());

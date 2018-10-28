@@ -5,12 +5,15 @@ import ExpressJoi from 'express-joi-validator';
 import AuthCtrl from '../controllers/auth.controller';
 
 // schemas
-import { signUpSchema } from '../schemas/auth.schema';
+import { signUpSchema, signInSchema } from '../schemas/auth.schema';
 
 
 const router = Router();
 
 router.route('/signup')
   .post(ExpressJoi(signUpSchema), AuthCtrl.signUp);
+
+router.route('/signin')
+  .post(ExpressJoi(signInSchema), AuthCtrl.signIn);
 
 export default router;
