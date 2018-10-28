@@ -40,10 +40,6 @@ const AuthCtrl = {
         .where('email', email)
         .fetch();
 
-      if (!foundUser) {
-        return response(res, 'error', 'User doesn\'t exist!', 404);
-      }
-
       const isPasswordValid = await foundUser.compare(password);
       const { password: userPassword, ...userDetails } = foundUser.attributes;
 
@@ -63,4 +59,4 @@ const AuthCtrl = {
   }
 };
 
-export default AuthCtrl;
+export default LoanCtrl;

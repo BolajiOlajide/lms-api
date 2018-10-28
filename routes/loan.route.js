@@ -1,17 +1,17 @@
 import { Router } from 'express';
+import ExpressJoi from 'express-joi-validator';
 
-import router from './index';
+// controllers
+import LoanCtrl from '../controllers/loan.controller';
+
+// schemas
+import { signUpSchema, signInSchema } from '../schemas/auth.schema';
 
 
 const router = Router();
 
 router.route('/')
-  .get(function(req, res) {
-    Contact
-      .fetchAll()
-      .then(function(contacts) {
-        res.json({ contacts });
-      });
-  });
+  .post(ExpressJoi(signUpSchema), LoanCtrl.createLoan)
+  .get(LoanCtrl.getAllLoans);
 
 export default router;
