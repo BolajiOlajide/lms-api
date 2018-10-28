@@ -1,10 +1,10 @@
 const knex = require('knex');
 const bookshelf = require('bookshelf');
-const bookshelfUuid = require('bookshelf-uuid');
-const knexConfig = require('../knexConfig');
+const bookshelfUUID = require('bookshelf-uuid');
+const knexConfig = require('../knexfile');
 
 
 const bookshelfInstance = bookshelf(knex(knexConfig));
-const _bookshelf = bookshelfInstance.plugin(bookshelfUuid);
+bookshelfInstance.plugin(bookshelfUUID);
 
-module.exports = _bookshelf;
+module.exports = bookshelfInstance;

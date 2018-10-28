@@ -3,7 +3,7 @@ import logger from 'winston';
 
 exports.up = knex => knex.schema
   .createTable('Loans', table => {
-    table.uuid('id').primary();
+    table.uuid('id').notNullable().primary();
     table.integer('loanNumber').notNullable();
     table.float('loanAmount').notNullable();
     table.float('partialPaymentMade').notNullable();

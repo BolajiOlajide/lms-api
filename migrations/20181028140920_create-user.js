@@ -4,8 +4,8 @@ import logger from 'winston';
 exports.up = knex => knex.schema
   .createTable('Users', table => {
     table.uuid('id').notNullable().primary();
-    table.string('firstName').notNullable();
-    table.string('lastName').notNullable();
+    table.string('firstname').notNullable();
+    table.string('surname').notNullable();
     table.string('email').notNullable();
     table.string('password').notNullable();
     table.timestamps(false, true); // no need to explicitly specify `created_at` and `updated_at`

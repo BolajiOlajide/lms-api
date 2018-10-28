@@ -3,7 +3,7 @@ import logger from 'winston';
 
 exports.up = knex => knex.schema
   .createTable('Banks', table => {
-    table.uuid('id').primary();
+    table.uuid('id').notNullable().primary();
     table.string('bankName').notNullable();
     table.timestamps(false, true); // no need to explicitly specify `created_at` and `updated_at`
     // table.timestamp("createdAt").defaultTo(knex.fn.now());

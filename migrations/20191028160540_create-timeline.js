@@ -2,9 +2,9 @@ import logger from 'winston';
 
 
 exports.up = knex => knex.schema
-  .createTable('Timeline', table => {
-    table.uuid('id').primary();
-    table.string('type');
+  .createTable('Timelines', table => {
+    table.uuid('id').notNullable().primary();
+    table.string('type').notNullable();
     table.uuid('loanId').references('id').inTable('Loans');
     table.timestamps(false, true); // no need to explicitly specify `created_at` and `updated_at`
     // table.timestamp("createdAt").defaultTo(knex.fn.now());
@@ -12,5 +12,5 @@ exports.up = knex => knex.schema
   }).catch(error => logger.error(error));
 
 exports.down = knex => knex
-  .schema.dropTable('Timeline')
+  .schema.dropTable('Timelines')
   .catch(error => logger.error(error));
