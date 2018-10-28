@@ -3,10 +3,10 @@ const Loan = require('./loan.model');
 
 
 const User = bookshelf.Model.extend({
-  tableName: 'users',
+  tableName: 'Users',
   user: function() {
     return this.hasMany(Loan);
   }
 });
 
-module.exports = User;
+export default User;

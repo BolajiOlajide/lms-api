@@ -102,3 +102,6 @@ node_modules
 testApp
 coverage
 .env
+
+# package management log
+yarn-error.log
