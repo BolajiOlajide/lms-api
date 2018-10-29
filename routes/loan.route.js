@@ -5,13 +5,21 @@ import ExpressJoi from 'express-joi-validator';
 import LoanCtrl from '../controllers/loan.controller';
 
 // schemas
-import { signUpSchema, signInSchema } from '../schemas/auth.schema';
+import {
+  createLoanSchema,
+  updateLoanSchema,
+  deleteLoanSchema
+} from '../schemas/loan.schema';
 
 
 const router = Router();
 
 router.route('/')
-  .post(ExpressJoi(signUpSchema), LoanCtrl.createLoan)
-  .get(LoanCtrl.getAllLoans);
+  .post(ExpressJoi(createLoanSchema), LoanCtrl.createLoan)
+  .get(LoanCtrl.getUserLoans);
+
+router.route('/:loanId')
+  .put(ExpressJoi(updateLoanSchema), LoanCtrl.updateLoan)
+  .delete(ExpressJoi(deleteLoanSchema), LoanCtrl.deleteLoan);
 
 export default router;

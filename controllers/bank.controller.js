@@ -43,13 +43,11 @@ const BankCtrl = {
 
   async deleteBank(req, res) {
     try {
-      const bank = await Bank.where('id', req.params.bankId);
+      const bank = await Bank.where('id', req.params.bankId).fetch();
 
       if (!bank) {
         return response(res, 'error', 'Bank doesn\'t exist!', 404);
       }
-
-      console.log(bank);
 
       await bank.destroy();
 

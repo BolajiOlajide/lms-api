@@ -2,57 +2,78 @@ import jwt from 'jsonwebtoken';
 
 // utils
 import response from '../utils/response';
+import { addDaysToDate } from '../utils/date';
 
 // models
-import User from '../models/user.model';
+import Loan from '../models/loan.model';
 
 
-const secret = process.env.JWT_SECRET;
-const audience = process.env.JWT_AUDIENCE;
-const jwtConfig = {
-  expiresIn: '24h',
-  algorithm: process.env.JWT_ALGO,
-  audience,
-};
-
-
-const AuthCtrl = {
-  async signUp(req, res) {
+const LoanCtrl = {
+  async createLoan(req, res) {
     try {
-      const newUser = await new User(req.body).save();
-      const { password, ...userDetails } = newUser.attributes;
+      const { duration, ...body } = req.body;
+      const { id: userId } = req.auth;
 
-      return jwt.sign(
-        userDetails, secret, jwtConfig,
-        (err, token) => response(res, 'success', {
-        ...userDetails,
-        token
-      }, 201));
+      const openingDate = new Date();
+      const dueDate = new Date(addDaysToDate(duration));
+
+      const loanPayload = {
+        ...body,
+        userId,
+        openingDate,
+        dueDate,
+        partialPaymentMade: 0
+      };
+
+      const newLoan = await new Loan(loanPayload).save();
+      return response(res, 'success', newLoan, 201);
     } catch (error) {
       return response(res, 'error', error.message, 400);
     }
   },
-  async signIn(req, res) {
+
+  async getUserLoans(req, res) {
     try {
-      const { email, password } = req.body;
+      const { id: userId } = req.auth;
 
-      const foundUser = await User
-        .where('email', email)
-        .fetch();
+      const userLoans = await Loan.where('userId', userId).fetchAll();
 
-      const isPasswordValid = await foundUser.compare(password);
-      const { password: userPassword, ...userDetails } = foundUser.attributes;
+      return response(res, 'success', userLoans);
+    } catch (error) {
+      return response(res, 'error', error.message, 400);
+    }
+  },
 
-      if (isPasswordValid) {
-        return jwt.sign(
-          userDetails, secret, jwtConfig,
-          (err, token) => response(res, 'success', {
-          ...userDetails,
-          token
-        }, 200));
+  async updateLoan(req, res) {
+    try {
+      const loan = await Loan.where('id', req.params.loanId).fetch();
+
+      if (!loan) {
+        return response(res, 'error', 'Loan doesn\'t exist!', 404);
       }
 
-      return response(res, 'error', 'Username and password doesn\'t match', 400);
+      const updatedLoan = await loan.save(req.body);
+      return response(res, 'success', updatedLoan);
+    } catch (error) {
+      return response(res, 'error', error.message, 400);
+    }
+  },
+
+  async deleteLoan(req, res) {
+    try {
+      const { auth: { id: userId }, params: { loanId } } = req;
+
+      const searchQuery = { userId, id: loanId };
+
+      const loan = await Loan.where(searchQuery).fetch();
+
+      if (!loan) {
+        return response(res, 'error', 'Bank doesn\'t exist!', 404);
+      }
+
+      await loan.destroy();
+
+      return response(res, 'success', {}, 204);
     } catch (error) {
       return response(res, 'error', error.message, 400);
     }
