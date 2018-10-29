@@ -7,6 +7,7 @@ import expressJwt from 'express-jwt'
 // routes
 import authRoutes from './routes/auth.route';
 import bankRoutes from './routes/bank.route';
+import projectRoutes from './routes/project.route';
 
 // utils
 import response from './utils/response';
@@ -31,7 +32,8 @@ app.use(expressJwt({
 
 // specify routes
 app.use('/auth', authRoutes);
-app.use('/banks', bankRoutes)
+app.use('/banks', bankRoutes);
+app.use('/projects', projectRoutes);
 
 // boom error handler
 app.use((error, req, res, next) => {

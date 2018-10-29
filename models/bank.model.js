@@ -1,5 +1,4 @@
 import bookshelf from '../database';
-import User from './user.model';
 
 
 const Bank = bookshelf.Model.extend({
